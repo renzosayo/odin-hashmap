@@ -1,7 +1,6 @@
 class HashMap {
   constructor () {
-    // this.capacity = 16;
-    this.capacity = 5;
+    this.capacity = 16;
     this.buckets = [];
     this.loadFactor = 0.75;
   }
@@ -18,12 +17,9 @@ class HashMap {
   set (key, value) {
     let index = this.hash(key) % this.capacity;
     this.buckets[index] = { [key] : value };
-
-    // todo: buckets grow logic
     let length = this.length();
     console.log(length + " " + this.capacity * this.loadFactor);
     if (length > (this.capacity * this.loadFactor)) {
-      
       this.rehash();
     }
   }
