@@ -1,6 +1,7 @@
 class HashMap {
   constructor () {
-    this.capacity = 16;
+    // this.capacity = 16;
+    this.capacity = 5;
     this.buckets = [];
     this.loadFactor = 0.75;
   }
@@ -19,7 +20,12 @@ class HashMap {
     this.buckets[index] = { [key] : value };
 
     // todo: buckets grow logic
-    // todo: check if key exists
+    let length = this.length();
+    console.log(length + " " + this.capacity * this.loadFactor);
+    if (length > (this.capacity * this.loadFactor)) {
+      
+      this.rehash();
+    }
   }
 
   get (key) {
@@ -29,7 +35,6 @@ class HashMap {
 
   has (key) {
     let index = this.hash(key) % this.capacity;
-    // return Object.hasOwn(this.buckets[index], key);
     if (this.buckets[index] !== undefined) {
       return Object.hasOwn(this.buckets[index], key);
     }
@@ -86,5 +91,14 @@ class HashMap {
     });
     string += ']';
     return string;
+  }
+
+  rehash () {
+    this.capacity *= 2;
+    const filtered = this.buckets.filter((node) => node !== null);
+    this.clear();
+    filtered.forEach((node) => {
+      this.set(Object.keys(node)[0], node[Object.keys(node)[0]]);
+    });
   }
 }
